@@ -6,6 +6,8 @@ import json
 import hashlib
 from django.contrib import messages
 from django.core.serializers import serialize
+from miapp import funciones
+
 #importar los modelos 
 from . import models 
 # Create your views here.
@@ -47,3 +49,7 @@ def leerReportes(request) -> JsonResponse:
         reportes_json = json.loads(reportes_serializados)
         #regresar json
         return JsonResponse(reportes_json, safe=False)
+
+def respaldarServidor(ipOrigen, ipDestino, dirOrigen, dirDestino, cron) -> JsonResponse:
+    if funciones.validar_ip(ipOrigen) == True and funciones.validar_ip(ipDestino) == True:
+        return JsonResponse({'ipOrigen': ipOrigen, 'ipDestino': ipDestino, 'dirOrigen': dirOrigen, 'dirDestino': dirDestino, 'cron': cron})
