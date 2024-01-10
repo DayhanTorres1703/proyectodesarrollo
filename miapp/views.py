@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 import os
 import json
 import hashlib
+import datetime
 from django.contrib import messages
 from django.core.serializers import serialize
 from miapp import funciones
@@ -19,6 +20,7 @@ def index(request):
     return render(request, 'index.html')
 def registroRespaldo(request):
     return render(request, 'registroRespaldo.html')
+
 def registroServidor(request):
     return render(request, 'registroServidor.html')
 def borrarRespaldo(request):
@@ -54,6 +56,16 @@ def leerReportes(request) -> JsonResponse:
         #regresar json
         return JsonResponse(reportes_json, safe=False)
 
-def respaldarServidor(ipOrigen, ipDestino, dirOrigen, dirDestino, cron) -> JsonResponse:
-    if funciones.validar_ip(ipOrigen) == True and funciones.validar_ip(ipDestino) == True:
-        return JsonResponse({'ipOrigen': ipOrigen, 'ipDestino': ipDestino, 'dirOrigen': dirOrigen, 'dirDestino': dirDestino, 'cron': cron})
+def respaldarServidor(request) -> JsonResponse:
+    if request.method == 'POST':
+        ipOrigen = request.POST.get('ipOrigen', '').strip
+        ipDestino = request.POST.get('ipDestino', '').strip
+        dirOrigen = request.POST.get('dirOrigen', '').strip
+        dirDestino = request.POST.get('dirDestino', '').strip
+        cron = request.POST.get('cron', '').strip
+        if funciones.validar_ip(ipOrigen) == True and funciones.validar_ip(ipDestino) == True:
+            fecha_actual = datetime.now
+            models.Servidor(servidor_origen=ipOrigen, directorio_origen=dirOrigen, servidor_destino=ipDestino, directorio_destino=ipDestino, periodicidad=cron, fecha_respaldo=fecha_actual)
+            return JsonResponse({"OK"}, safe=False)
+        else:
+            return JsonResponse({'ERROR'}, safe=False)
