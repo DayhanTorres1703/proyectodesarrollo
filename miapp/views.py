@@ -2,8 +2,10 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 import os
+import json
 import hashlib
 from django.contrib import messages
+from django.core.serializers import serialize
 #importar los modelos 
 from . import models 
 # Create your views here.
@@ -20,7 +22,7 @@ def login(request):
 
 # Código que escribe Benjamin para lo de AJAX
 
-def obtenerReporte(request):
+def obtenerReporte(request) -> JsonResponse:
     if request.method == 'POST':
         #Variables que manda el bot del server
         hora = request.POST.get('hora', '')
@@ -32,3 +34,16 @@ def obtenerReporte(request):
         
     return JsonResponse({'hora': hora, 'estado': estado_respaldo, 'nombre': nombre_respaldo})
 
+def mostrarReportes(request) -> HttpResponse:
+    reportes = models.Reportes.objects.all()
+    return render(request, "", {'reportes': reportes})
+
+def leerReportes(request) -> JsonResponse:
+    if request.method == 'GET':
+        #Recuperar reportes
+        reportes = models.Reportes.objects.all()
+        #Convertir a json
+        reportes_serializados = serialize("json",reportes)
+        reportes_json = json.loads(reportes_serializados)
+        #regresar json
+        return JsonResponse(reportes_json, safe=False)

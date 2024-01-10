@@ -5,7 +5,9 @@ from django.db import models
 
 class Bots(models.Model):
     servidor = models.CharField(max_length=50)
-    contra = models.CharField(max_lenght=256)
+    contra = models.CharField(max_length=256)
 
-#class Reportes(Models.Model):
-    #hora = models.
+class Reportes(models.Model):
+    hora = models.DateTimeField(auto_now_add=True)
+    estado = models.CharField(max_length=20)
+    nombre = models.CharField(max_length=50)
