@@ -11,21 +11,34 @@ from miapp import funciones
 #importar los modelos 
 from . import models 
 # Create your views here.
-
+#incio
 def hello(request):
     return HttpResponse("HOLA PROYECTO WEB")
 #mostrar un templates
+#INDEX
 def index(request):
     return render(request, 'index.html')
-def registroRespaldo(request):
-    return render(request, 'registroRespaldo.html')
-def registroServidor(request):
-    return render(request, 'registroServidor.html')
-def borrarRespaldo(request):
-    return render(request, 'borrarRespaldo.html')
+#Login de los sysadmin
 def login(request):
     return render(request, 'login.html')
 
+#Registrar respaldos
+def registroRespaldo(request):
+    return render(request, 'registroRespaldo.html')
+
+#Registrar Servidor
+def registroServidor(request):
+    return render(request, 'registroServidor.html')
+
+#Borrar configuracion Respaldo
+def borrarRespaldo(request):
+    return render(request, 'borrarRespaldo.html')
+
+#Reporte de ejecucion Respaldos
+def reporteRespaldo(request):
+    return render(request, 'reporteRespaldo.html')
+
+    
 # Código que escribe Benjamin para lo de AJAX
 
 def obtenerReporte(request) -> JsonResponse:

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Reporte de Ejecución de Respaldos{% endblock %}
+
+{% block encabezado %}Reporte de Ejecución de Respaldos{% endblock %}
+
+{% block contenido %}
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Hora y Fecha</th>
+          <th>Estado</th>
+          <th>Nombre del Archivo</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for respaldo in respaldos %}
+          <tr>
+            <td>{{ respaldo.fecha_respaldo|date:'Y-m-d H:i:s' }}</td>
+            <td>{% if respaldo.estado == 'exitoso' %}Éxito{% else %}Fallo{% endif %}</td>
+            <td>{{ respaldo.nombre_archivo }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
