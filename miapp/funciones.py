@@ -1,5 +1,6 @@
 from django.shortcuts import redirect
 import re
+import os
 
 #Función para el manejo de sesiones
 def logueado(fun_a_decorar):
@@ -15,3 +16,6 @@ def validar_ip(ip):
         return True
     else:
         return False
+
+#def preguntarEstadoServidor(ip):
+#    ping
