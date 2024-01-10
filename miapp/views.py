@@ -6,6 +6,8 @@ import json
 import hashlib
 from django.contrib import messages
 from django.core.serializers import serialize
+from miapp import funciones
+
 #importar los modelos 
 from . import models 
 # Create your views here.
