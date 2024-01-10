@@ -21,6 +21,8 @@ def registroRespaldo(request):
     return render(request, 'registroRespaldo.html')
 def registroServidor(request):
     return render(request, 'registroServidor.html')
+def borrarRespaldo(request):
+    return render(request, 'borrarRespaldo.html')
 def login(request):
     return render(request, 'login.html')
 

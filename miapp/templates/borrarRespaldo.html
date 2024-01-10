@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Borrar Respaldo{% endblock %}
+
+{% block encabezado %}Borrar Respaldo{% endblock %}
+
+{% block contenido %}
+  <form method="post" action="{% url 'borrarRespaldo' %}">
+    {% csrf_token %}
+    
+    <div class="mb-3">
+      <label for="idRespaldo" class="form-label">Selecciona el Respaldo a Borrar</label>
+      <select class="form-select" id="idRespaldo" name="idRespaldo" required>
+        {% for respaldo in respaldos %}
+          <option value="{{ respaldo.id }}">{{ respaldo.fecha_respaldo }} - {{ respaldo.otro_campo }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-danger">Borrar Respaldo</button>
+  </form>
+{% endblock %}
+

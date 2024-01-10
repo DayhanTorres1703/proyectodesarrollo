@@ -26,4 +26,5 @@ urlpatterns = [
     path('login/', views.login, name='login'),
     path('respaldo/', views.registroRespaldo, name='registroRespaldo'),
     path('registroservidor/', views.registroServidor, name='registroServidor'),
+    path('borrarRespaldo/', views.borrarRespaldo, name='borrarRespaldo'),
 ]
