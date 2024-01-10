@@ -15,8 +15,8 @@ def hello(request):
 #mostrar un templates
 def index(request):
     return render(request, 'index.html')
-def registroServidor (request):
-    return render(request, 'registroservidor.html')
+def registroRespaldo(request):
+    return render(request, 'registroRespaldo.html')
 def login(request):
     return render(request, 'login.html')
 
