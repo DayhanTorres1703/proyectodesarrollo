@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Registro de Respaldo{% endblock %}
+
+{% block encabezado %}Registro de Respaldo{% endblock %}
+
+{% block contenido %}
+  <form method="post" action="{% url 'registroRespaldo' %}">
+    {% csrf_token %}
+    
+    <div class="mb-3">
+      <label for="servidorOrigen" class="form-label">Servidor Origen del Respaldo</label>
+      <input type="text" class="form-control" id="servidorOrigen" name="servidorOrigen" required>
+    </div>
+    
+    <div class="mb-3">
+      <label for="directorioOrigen" class="form-label">Directorio Origen del Servidor Origen</label>
+      <input type="text" class="form-control" id="directorioOrigen" name="directorioOrigen" required>
+    </div>
+    
+    <div class="mb-3">
+      <label for="servidorDestino" class="form-label">Servidor Destino</label>
+      <input type="text" class="form-control" id="servidorDestino" name="servidorDestino" required>
+    </div>
+    
+    <div class="mb-3">
+      <label for="directorioDestino" class="form-label">Directorio Destino en el Servidor Destino</label>
+      <input type="text" class="form-control" id="directorioDestino" name="directorioDestino" required>
+    </div>
+    
+    <div class="mb-3">
+      <label for="periodicidad" class="form-label">Periodicidad del Respaldo</label>
+      <input type="text" class="form-control" id="periodicidad" name="periodicidad" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Registrar Respaldo</button>
+  </form>
+{% endblock %}

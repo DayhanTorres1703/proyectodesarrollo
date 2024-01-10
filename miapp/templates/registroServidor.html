@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Registro de Servidor{% endblock %}
+
+{% block encabezado %}Registro de Servidor{% endblock %}
+
+{% block contenido %}
+  <form method="post" action="{% url 'registroServidor' %}">
+    {% csrf_token %}
+
+    <div class="mb-3">
+      <label for="nombreServidor" class="form-label">Nombre del Servidor</label>
+      <input type="text" class="form-control" id="nombreServidor" name="nombreServidor" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="ipServidor" class="form-label">IP del Servidor</label>
+      <input type="text" class="form-control" id="ipServidor" name="ipServidor" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="usuarioServidor" class="form-label">Usuario del Servidor</label>
+      <input type="text" class="form-control" id="usuarioServidor" name="usuarioServidor" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="contrasenaBot" class="form-label">Contraseña del Bot</label>
+      <input type="password" class="form-control" id="contrasenaBot" name="contrasenaBot" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Registrar Servidor</button>
+  </form>
+{% endblock %}

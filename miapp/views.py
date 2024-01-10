@@ -19,6 +19,9 @@ def index(request):
     return render(request, 'index.html')
 def registroRespaldo(request):
     return render(request, 'registroRespaldo.html')
+
+def registroServidor(request):
+    return render(request, 'registroServidor.html')
 def login(request):
     return render(request, 'login.html')
 
