@@ -22,6 +22,7 @@ from miapp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.hello),
+    path('prueba/', views.pruebaFormulario, name='pruebaFormulario'),
     path('index/', views.index),
     path('login/', views.login, name='login'),
     path('respaldo/', views.registroRespaldo, name='registroRespaldo'),

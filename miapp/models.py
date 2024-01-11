@@ -2,7 +2,7 @@ from django.db import models
 #class Servidor(models.Model):
  #   nombre = models.CharField(max_length=40)
 # Create your models here.
-
+"""
 class Bots(models.Model):
     servidor = models.CharField(max_length=50)
     contra = models.CharField(max_length=256)
@@ -26,3 +26,7 @@ class RegistroRespaldo(models.Model):
     periodicidad = models.CharField(max_length=255)
     fecha_respaldo = models.DateTimeField(auto_now_add=True)
 
+"""
+class Prueba(models.Model):
+    nombre = models.CharField(max_length=50)
+    apellido = models.CharField(max_length=50)

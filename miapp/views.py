@@ -19,6 +19,17 @@ def hello(request):
 #INDEX
 def index(request):
     return render(request, 'index.html')
+def pruebaFormulario(request):
+     if request.method == 'POST':
+        nombre = request.POST.get('nombre')
+        apellido = request.POST.get('apellido')
+
+        if nombre and apellido:
+            models.Prueba.objects.create(nombre=nombre, apellido=apellido)
+            return redirect('login.html')  # Redirige a una página de éxito
+
+     return render(request, 'prueba.html')
+
 #Login de los sysadmin
 def login(request):
     return render(request, 'login.html')
@@ -26,6 +37,7 @@ def login(request):
 #Registrar respaldos
 def registroRespaldo(request):
     return render(request, 'registroRespaldo.html')
+
 def registroServidor(request):
     return render(request, 'registroServidor.html')
 
