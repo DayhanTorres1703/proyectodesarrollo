@@ -27,8 +27,8 @@ def mandarSignal(ip, puerto):
 
     #Enviar la señal
     mensaje = "Trabaja"
-    sock.sendto(mensaje.encode(), dirección_destino)
+    sock.sendto(mensaje.encode(), direccion_destino)
 
     #Cerrar el socket
     sock.close()
-    
+
