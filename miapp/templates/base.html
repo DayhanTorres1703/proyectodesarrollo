@@ -1,43 +1,43 @@
-
 <!DOCTYPE html>
 
 <html lang="es-MX">
-  <head>
+<head>
     <title>{% block titulo %}{% endblock %}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
-  
+
     {% block scripts %}{% endblock %}
-  </head>
+</head>
 
-  <body>
+<body class="bg-light">
 
-    <header class="container-fluid text-center bg-warning pt-5 pb-3 mt-3 mb-3 rounded text-white">
-      <h1>{% block encabezado %}{% endblock %}</h1>
-    </header>
+<header class="container-fluid text-center bg-warning pt-5 pb-3 mt-3 mb-3 rounded text-white">
+    <h1>{% block encabezado %}{% endblock %}</h1>
+</header>
 
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/registro">Registro Servidor</a>
+        <a class="navbar-brand" href="/estado">Estado respaldos</a>
+    </div>
+</nav>
 
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
-      <div class="container-fluid">
-        <!--CAMBIAR POR MIS PAGINAS-->
-	<a class="navbar-brand" href="/registro">Registro Servidor</a>
-	<a class="navbar-brand" href="/estado">Estado respaldos</a>
-      </div>
-    </nav>
-    
-    <section class="container">
-      {% block contenido%}{% endblock %}
-    </section>
-   <!-- footer-->
-   <footer class="container-fluid text-center bg-secondary text-white p-3">
-    <p>Rolando Reyes, Benjamin Rivera Rojas, Dayhan Vazquez Torres</p> <br>
+<section class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            {% block contenido %}{% endblock %}
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="container-fluid text-center bg-secondary text-white p-3 mt-5">
+    <p>Rolando Reyes, Benjamin Rivera Rojas, Dayhan Vazquez Torres</p>
     <p>Correos: zs19016019@estudiantes.uv.mx</p>
-  </footer>
-  <!--los scripts-->
+</footer>
 
-
-  </body>
+</body>
 </html>
