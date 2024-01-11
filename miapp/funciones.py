@@ -1,6 +1,7 @@
 from django.shortcuts import redirect
 import re
 import os
+import socket
 
 #Función para el manejo de sesiones
 def logueado(fun_a_decorar):
@@ -17,5 +18,17 @@ def validar_ip(ip):
     else:
         return False
 
-#def preguntarEstadoServidor(ip):
-#    ping
+def mandarSignal(ip, puerto):
+    #Crear socket UDP
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+    #Dirección del destino
+    direccion_destino = (ip, puerto)
+
+    #Enviar la señal
+    mensaje = "Trabaja"
+    sock.sendto(mensaje.encode(), dirección_destino)
+
+    #Cerrar el socket
+    sock.close()
+    

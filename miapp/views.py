@@ -87,7 +87,7 @@ def respaldarServidor(request) -> JsonResponse:
         cron = request.POST.get('cron', '').strip
         if funciones.validar_ip(ipOrigen) == True and funciones.validar_ip(ipDestino) == True:
             fecha_actual = datetime.now
-            models.Servidor(servidor_origen=ipOrigen, directorio_origen=dirOrigen, servidor_destino=ipDestino, directorio_destino=ipDestino, periodicidad=cron, fecha_respaldo=fecha_actual)
+            models.Servidor(servidor_origen=ipOrigen, directorio_origen=dirOrigen, servidor_destino=ipDestino, directorio_destino=dirDestino, periodicidad=cron, fecha_respaldo=fecha_actual)
             return JsonResponse({"OK"}, safe=False)
         else:
             return JsonResponse({'ERROR'}, safe=False)
