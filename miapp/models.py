@@ -31,3 +31,7 @@ class Reportes(models.Model):
 class Prueba(models.Model):
     nombre = models.CharField(max_length=50)
     apellido = models.CharField(max_length=50)
+    
+class Login(models.Model):
+    usuario = models.CharField(max_length=50)
+    password = models.CharField(max_length=256)

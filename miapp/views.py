@@ -8,6 +8,8 @@ import datetime
 from django.contrib import messages
 from django.core.serializers import serialize
 from miapp import funciones
+from miapp import models
+from .models import Login
 
 #importar los modelos 
 from . import models 
@@ -32,6 +34,19 @@ def pruebaFormulario(request):
 
 #Login de los sysadmin
 def login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        try:
+            user = models.Login.objects.get(usuario=username, password=password)
+            # Usuario autenticado
+            request.session['usuario'] = username
+            return redirect('/reporteRespaldo/') 
+        except Login.DoesNotExist:
+            # Usuario no encontrado en la base de datos
+            messages.error(request, 'Nombre de usuario o contraseña incorrectos.')
+
     return render(request, 'login.html')
 
 #Registrar respaldos
