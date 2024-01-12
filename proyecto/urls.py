@@ -29,5 +29,7 @@ urlpatterns = [
     path('registroservidor/', views.registroServidor, name='registroServidor'),
     path('borrarRespaldo/', views.borrarRespaldo, name='borrarRespaldo'),
     path('reporteRespaldo/', views.reporteRespaldo, name='reporteRespaldo'),
+    path('leer_Respaldo/', views.leerReportes, name='leer_respaldo'),
+
 
 ]

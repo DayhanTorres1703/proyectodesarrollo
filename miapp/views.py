@@ -81,7 +81,7 @@ def obtenerReporte(request) -> JsonResponse:
 
 def mostrarReportes(request) -> HttpResponse:
     reportes = models.Reportes.objects.all()
-    return render(request, "", {'reportes': reportes})
+    return render(request, "reporteRespaldo", {'reportes': reportes})
 
 def leerReportes(request) -> JsonResponse:
     if request.method == 'GET':
