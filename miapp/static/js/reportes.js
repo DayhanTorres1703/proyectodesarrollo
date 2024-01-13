@@ -17,5 +17,5 @@ $(function() {
                 $("#reportes").append(htmlRow);
             });
         });
-    }, 3000);
+    }, 1000);
 });

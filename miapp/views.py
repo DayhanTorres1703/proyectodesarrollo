@@ -28,6 +28,7 @@ def hello(request):
 #INDEX
 def index(request):
     return render(request, 'index.html')
+#formulario pruba
 def pruebaFormulario(request):
      if request.method == 'POST':
         nombre = request.POST.get('nombre')
