@@ -46,7 +46,7 @@ def login(request):
             user = models.Login.objects.get(usuario=username, password=password)
             # Usuario autenticado
             request.session['usuario'] = True
-            return redirect('/reporteRespaldo/') 
+            return redirect('/mostrar_configuraciones/') 
         except Login.DoesNotExist:
             # Usuario no encontrado en la base de datos
             messages.error(request, 'Nombre de usuario o contraseña incorrectos.')
@@ -114,7 +114,7 @@ def registroServidor(request):
 
     
 # Código que escribe Benjamin para lo de AJAX
-
+@funciones.logueado
 def obtenerReporte(request) -> JsonResponse:
     if request.method == 'POST':
         #Variables que manda el bot del server
@@ -126,10 +126,10 @@ def obtenerReporte(request) -> JsonResponse:
             return JsonResponse({'Errores': 'No se completó el respaldo'})
         
     return JsonResponse({'hora': hora, 'estado': estado_respaldo, 'nombre': nombre_respaldo})
-
+@funciones.logueado
 def mostrarReportes(request) -> HttpResponse:
     reportes = models.Reportes.objects.all()
-    return render(request, "reporteRespaldo", {'reportes': reportes})
+    return render(request, "reporteRespaldo.html", {'reportes': reportes})
 
 def leerReportes(request) -> JsonResponse:
     if request.method == 'GET':
@@ -157,11 +157,11 @@ def respaldarDir(request) -> JsonResponse:
         
 #borrar configuracion de respaldos: mostrar configuraciones   
      
- 
+@funciones.logueado
 def mostrar_configuraciones_respaldo(request):
     configuraciones_respaldo = models.RegistroRespaldo.objects.all()
     return render(request, 'mostrar_configuraciones_respaldo.html', {'configuraciones_respaldo': configuraciones_respaldo})
-
+@funciones.logueado
 def borrar_configuracion(request):
     if request.method == 'POST':
         configuracion_id = request.POST.get('configuracion')
