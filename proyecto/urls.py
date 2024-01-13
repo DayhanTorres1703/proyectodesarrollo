@@ -30,6 +30,9 @@ urlpatterns = [
     path('borrarRespaldo/', views.borrarRespaldo, name='borrarRespaldo'),
     path('reporteRespaldo/', views.reporteRespaldo, name='reporteRespaldo'),
     path('leer_Respaldo/', views.leerReportes, name='leer_respaldo'),
+    path('mostrar_configuraciones_respaldo/', views.mostrar_configuraciones_respaldo, name='mostrar_configuraciones_respaldo'),
+    path('borrar_configuracion/', views.borrar_configuracion, name='borrar_configuracion'),
+
 
 
 ]

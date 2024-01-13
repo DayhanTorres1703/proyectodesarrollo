@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Configuraciones de Respaldo{% endblock %}
+
+{% block encabezado %}Configuraciones de Respaldo{% endblock %}
+
+{% block contenido %}
+  <form method="post" action="{% url 'borrar_configuracion' %}">
+    {% csrf_token %}
+    <label for="configuracion">Selecciona una configuración:</label>
+    <select name="configuracion" id="configuracion">
+      {% for configuracion in configuraciones_respaldo %}
+        <option value="{{ configuracion.id }}">{{ configuracion.id }} - {{ configuracion.ip_origen }} - {{ configuracion.directorio_origen }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit">Borrar Configuración</button>
+  </form>
+{% endblock %}

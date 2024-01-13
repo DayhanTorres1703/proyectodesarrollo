@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
-{% block titulo %}Borrar Respaldo{% endblock %}
+{% block titulo %}Borrar configuracion{% endblock %}
 
-{% block encabezado %}Borrar Respaldo{% endblock %}
+{% block encabezado %}Borrar configuracion de respaldo{% endblock %}
 
 {% block contenido %}
-  <form method="post" action="{% url 'borrarRespaldo' %}">
+  <form method="post" action="{% url 'borrar_Respaldo' %}">
     {% csrf_token %}
     
     <div class="mb-3">

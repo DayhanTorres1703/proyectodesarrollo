@@ -93,7 +93,7 @@ def leerReportes(request) -> JsonResponse:
         #regresar json
         return JsonResponse(reportes_json, safe=False)
 
-def respaldarServidor(request) -> JsonResponse:
+def respaldarDir(request) -> JsonResponse:
     if request.method == 'POST':
         ipOrigen = request.POST.get('ipOrigen', '').strip
         ipDestino = request.POST.get('ipDestino', '').strip
@@ -106,3 +106,20 @@ def respaldarServidor(request) -> JsonResponse:
             return JsonResponse({"OK"}, safe=False)
         else:
             return JsonResponse({'ERROR'}, safe=False)
+        
+#borrar configuracion de respaldos: mostrar configuraciones   
+     
+ 
+def mostrar_configuraciones_respaldo(request):
+    configuraciones_respaldo = models.RegistroRespaldo.objects.all()
+    return render(request, 'mostrar_configuraciones_respaldo.html', {'configuraciones_respaldo': configuraciones_respaldo})
+
+def borrar_configuracion(request):
+    if request.method == 'POST':
+        configuracion_id = request.POST.get('configuracion')
+        configuracion = models.RegistroRespaldo.objects.filter(id=configuracion_id).first()
+
+        if configuracion:
+            configuracion.delete()
+
+    return redirect('mostrar_configuraciones_respaldo')
