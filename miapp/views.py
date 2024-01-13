@@ -112,14 +112,6 @@ def registroServidor(request):
 
     return render(request, 'registroServidor.html', {'messages': messages.get_messages(request)})
 
-#Borrar configuracion Respaldo
-def borrarRespaldo(request):
-    return render(request, 'borrarRespaldo.html')
-
-#Reporte de ejecucion Respaldos
-def reporteRespaldo(request):
-    return render(request, 'reporteRespaldo.html')
-
     
 # Código que escribe Benjamin para lo de AJAX
 
