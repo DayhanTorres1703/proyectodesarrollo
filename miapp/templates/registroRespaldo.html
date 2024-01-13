@@ -7,30 +7,91 @@
 {% block contenido %}
   <form method="post" action="{% url 'registroRespaldo' %}">
     {% csrf_token %}
-    
+
     <div class="mb-3">
       <label for="servidorOrigen" class="form-label">Servidor Origen del Respaldo</label>
-      <input type="text" class="form-control" id="servidorOrigen" name="servidorOrigen" required>
+      <select class="form-select" id="servidorOrigen" name="servidorOrigen" required>
+        {% for servidor in servidores %}
+          <option value="{{ servidor.ip }}">{{ servidor.ip }}</option>
+        {% endfor %}
+      </select>
     </div>
-    
+
     <div class="mb-3">
       <label for="directorioOrigen" class="form-label">Directorio Origen del Servidor Origen</label>
-      <input type="text" class="form-control" id="directorioOrigen" name="directorioOrigen" required>
+      <select class="form-select" id="directorioOrigen" name="directorioOrigen" required>
+        <option value="/">Raíz "/"</option>
+        <option value="/home">Home "/home"</option>
+        <option value="/etc">Etc "/etc"</option>
+      </select>
     </div>
-    
+
     <div class="mb-3">
       <label for="servidorDestino" class="form-label">Servidor Destino</label>
-      <input type="text" class="form-control" id="servidorDestino" name="servidorDestino" required>
+      <select class="form-select" id="servidorDestino" name="servidorDestino" required>
+        {% for servidor in servidores %}
+          <option value="{{ servidor.ip }}">{{ servidor.ip }}</option>
+        {% endfor %}
+      </select>
     </div>
-    
+
     <div class="mb-3">
       <label for="directorioDestino" class="form-label">Directorio Destino en el Servidor Destino</label>
-      <input type="text" class="form-control" id="directorioDestino" name="directorioDestino" required>
+      <select class="form-select" id="directorioDestino" name="directorioDestino" required>
+        <option value="/etc">"/Etc"</option>
+        <option value="/usr/share">"Usr/Share"</option>
+        <option value="/home/backups">"Home/Backups"</option>
+      </select>
     </div>
-    
+
     <div class="mb-3">
       <label for="periodicidad" class="form-label">Periodicidad del Respaldo</label>
-      <input type="text" class="form-control" id="periodicidad" name="periodicidad" required>
+      <div class="row">
+        <div class="mb-3">
+          <label for="minutos" class="form-label">Minutos</label>
+          <select class="form-select" id="minutos" name="minutos" required>
+              {% for minuto in minutos %}
+                  <option value="{{ minuto }}">{{ minuto }}</option>
+              {% endfor %}
+          </select>
+        </div>
+      
+        <div class="mb-3">
+          <label for="horas" class="form-label">Horas</label>
+          <select class="form-select" id="horas" name="horas" required>
+              {% for hora in horas %}
+                  <option value="{{ hora }}">{{ hora }}</option>
+              {% endfor %}
+          </select>
+        </div>
+        
+        <div class="mb-3">
+          <label for="dias_mes" class="form-label">Día del mes</label>
+          <select class="form-select" id="dias_mes" name="dias_mes" required>
+              {% for dia in dias_mes %}
+                  <option value="{{ dia }}">{{ dia }}</option>
+              {% endfor %}
+          </select>
+        </div>
+        
+        <div class="mb-3">
+          <label for="meses" class="form-label">Mes</label>
+          <select class="form-select" id="meses" name="meses" required>
+              {% for mes in meses %}
+                  <option value="{{ mes }}">{{ mes }}</option>
+              {% endfor %}
+          </select>
+        </div>
+        
+        <div class="mb-3">
+          <label for="dias_semana" class="form-label">Día de la semana</label>
+          <select class="form-select" id="dias_semana" name="dias_semana" required>
+              {% for dia_semana in dias_semana %}
+                  <option value="{{ dia_semana }}">{{ dia_semana }}</option>
+              {% endfor %}
+          </select>
+        </div>
+      </div>
     </div>
 
     <button type="submit" class="btn btn-primary" id="enviarRespaldo">Registrar Respaldo</button>

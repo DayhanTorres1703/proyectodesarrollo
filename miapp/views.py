@@ -10,6 +10,10 @@ from django.core.serializers import serialize
 from miapp import funciones
 from miapp import models
 from .models import Login
+from .models import Servidor
+from .funciones import validar_ip
+from .models import RegistroRespaldo
+from .funciones import logueado
 
 #importar los modelos 
 from . import models 
@@ -41,7 +45,7 @@ def login(request):
         try:
             user = models.Login.objects.get(usuario=username, password=password)
             # Usuario autenticado
-            request.session['usuario'] = username
+            request.session['usuario'] = True
             return redirect('/reporteRespaldo/') 
         except Login.DoesNotExist:
             # Usuario no encontrado en la base de datos
@@ -50,11 +54,63 @@ def login(request):
     return render(request, 'login.html')
 
 #Registrar respaldos
+@funciones.logueado
 def registroRespaldo(request):
-    return render(request, 'registroRespaldo.html')
+    if request.method == 'POST':
+        # Obtener datos del formulario
+        servidor_origen_ip = request.POST.get('servidorOrigen')
+        directorio_origen = request.POST.get('directorioOrigen')
+        servidor_destino_ip = request.POST.get('servidorDestino')
+        directorio_destino = request.POST.get('directorioDestino')
+        periodicidad = request.POST.get('minutos') + ' ' + request.POST.get('horas') + ' ' + request.POST.get('dias_mes') + ' ' + request.POST.get('meses') + ' ' + request.POST.get('dias_semana')
+        
+        # Crear y guardar el objeto RegistroRespaldo en la base de datos
+        servidor_origen = models.Servidor.objects.get(ip=servidor_origen_ip)
+        servidor_destino = models.Servidor.objects.get(ip=servidor_destino_ip)
 
+        respaldo = RegistroRespaldo(
+            ip_origen=servidor_origen.ip,
+            directorio_origen=directorio_origen,
+            ip_destino=servidor_destino.ip,
+            directorio_destino=directorio_destino,
+            periodicidad=periodicidad,
+            servidor_origen=servidor_origen
+        )
+        respaldo.save()
+
+        return redirect('/reporteRespaldo/')
+    
+    servidores = models.Servidor.objects.all()
+    minutos = ['*'] + list(range(60))
+    horas = ['*'] + list(range(24))
+    dias_mes = ['*'] + list(range(32))
+    meses = ['*'] + list(range(13))
+    dias_semana = ['*'] + list(range(8))
+    
+    
+    return render(request, 'registroRespaldo.html', {'servidores': servidores, 'minutos': minutos, 'horas': horas, 'dias_mes': dias_mes, 'meses': meses, 'dias_semana': dias_semana})
+
+@funciones.logueado
 def registroServidor(request):
-    return render(request, 'registroServidor.html')
+    if request.method == 'POST':
+        nombre_servidor = request.POST.get('nombreServidor')
+        ip_servidor = request.POST.get('ipServidor')
+        usuario_servidor = request.POST.get('usuarioServidor')
+        contrasena_bot = request.POST.get('contrasenaBot')
+
+        # Validar la IP antes de guardarla en la base de datos
+        if not validar_ip(ip_servidor):
+            messages.error(request, 'La dirección IP no es válida.')
+            return render(request, 'registroServidor.html')
+
+        # Guardar en la base de datos
+        servidor = Servidor(nombre=nombre_servidor, ip=ip_servidor, usuario=usuario_servidor, contrasena_bot=contrasena_bot)
+        servidor.save()
+
+        # Redirigir a la página deseada después de guardar
+        return redirect('/reporteRespaldo/')
+
+    return render(request, 'registroServidor.html', {'messages': messages.get_messages(request)})
 
 #Borrar configuracion Respaldo
 def borrarRespaldo(request):
