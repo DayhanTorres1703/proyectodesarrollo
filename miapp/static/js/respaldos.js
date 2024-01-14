@@ -9,7 +9,7 @@ $(function(){
         dirDestino: $("#directorioDestino").val(), 
         cron: cron_cadena},
         function(data, status){
-            if(status == "success"){
+            if(status == "error"){
                 if(data.status != "OK"){
                     alert("No se lograron mandar los datos");
                 }
