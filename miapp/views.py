@@ -118,17 +118,30 @@ def registroServidor(request):
 
     
 # Código que escribe Benjamin para lo de AJAX
-@funciones.logueado
+@csrf_exempt
 def obtenerReporte(request) -> JsonResponse:
     if request.method == 'POST':
         #Variables que manda el bot del server
-        hora = request.POST.get('hora', '')
+        #hora = request.POST.get('hora', '')
         estado_respaldo = request.POST.get('estado', '')
         nombre_respaldo = request.POST.get('nombre','')
         contra = request.POST.get('pass','')
-        if estado_respaldo == '' or estado_respaldo == 'fallido':
-            return JsonResponse({'Errores': 'No se completó el respaldo'})
-    return JsonResponse({'hora': hora, 'estado': estado_respaldo, 'nombre': nombre_respaldo})
+        identificador = request.POST.get('id','')
+        #print("HOLAAAAA" + identificador + " " + contra + " " + nombre_respaldo)
+
+        respaldo = models.RegistroRespaldo.objects.get(id=identificador)
+        respaldo_dic = model_to_dict(respaldo)
+        servidor_origen_data = models.Servidor.objects.get(id=respaldo_dic['servidor_origen'])
+        servidor_origen_dic = model_to_dict(servidor_origen_data)
+        #print(contra == servidor_origen_dic['contrasena_bot'])
+        if estado_respaldo == 'Exitoso' and contra == servidor_origen_dic['contrasena_bot']:
+            nuevo_reporte = models.Reportes(estado=estado_respaldo,nombre=nombre_respaldo,respaldo_origen=respaldo)
+            nuevo_reporte.save()
+            return JsonResponse({'status': 'Se completó el respaldo'})
+        else:
+            nuevo_reporte = models.Reportes(estado=estado_respaldo,nombre=nombre_respaldo,respaldo_origen=respaldo)
+            nuevo_reporte.save()
+            return JsonResponse({'status':'ERROR'})
 
 @funciones.logueado
 def mostrarReportes(request) -> HttpResponse:
@@ -148,34 +161,22 @@ def leerReportes(request) -> JsonResponse:
 @csrf_exempt
 def respaldarServidor(request) -> JsonResponse:
     if request.method == 'GET':
-        respaldo_reciente = models.RegistroRespaldo.objects.filter().order_by('-id')[0]
-        respaldo_dic = model_to_dict(respaldo_reciente)
-        server_destino_data = models.Servidor.objects.get(ip=respaldo_dic['ip_destino'])
-        server_des_dic = model_to_dict(server_destino_data)
-        respaldo_dic['userDestino'] = server_des_dic['usuario']
-        return JsonResponse(respaldo_dic, safe=False)
+        return JsonResponse({'status': 'ERROR'}, safe=False)
 
     if request.method == 'POST':
-        ipOrigen = request.POST.get('ipOrigen', '').strip()
-        ipDestino = request.POST.get('ipDestino', '').strip()
-        dirOrigen = request.POST.get('dirOrigen', '').strip()
-        dirDestino = request.POST.get('dirDestino', '').strip()
-        cron = request.POST.get('cron', '').strip()
-        try:
-            if funciones.validar_ip(ipOrigen) == True and funciones.validar_ip(ipDestino) == True:
-                datos_respaldo = models.RegistroRespaldo.objects.get(ip_origen=ipOrigen, ip_destino=ipDestino, directorio_destino=dirDestino, directorio_origen=dirOrigen, periodicidad=cron)
-                datos_dic = model_to_dict(datos_respaldo)
-                server_destino_data = models.Servidor.objects.get(ip=datos_dic['servidor_destino'])
-                server_des_dic = model_to_dict(server_destino_data)
-                datos_dic['status'] = 'OK'
-                datos_dic['userDestino'] = server_des_dic['usuario']
-                datos_json = json.dumps(datos_dic)
-                # regresar json
-                return JsonResponse(datos_json, safe=False)
-            else:
-                return JsonResponse({'status': 'ERROR'}, safe=False)
-        except ObjectDoesNotExist:
-            return JsonResponse({'status': 'FALLO'}, safe=False)
+        contra = request.POST.get('contra', '')
+        respaldo_reciente = models.RegistroRespaldo.objects.filter().order_by('-id')[0]
+        respaldo_dic = model_to_dict(respaldo_reciente)
+        servidor_origen_data = models.Servidor.objects.get(id=respaldo_dic['servidor_origen'])
+        servidor_origen_dic = model_to_dict(servidor_origen_data)
+        if contra == servidor_origen_dic['contrasena_bot']:
+            server_destino_data = models.Servidor.objects.get(ip=respaldo_dic['ip_destino'])
+            server_des_dic = model_to_dict(server_destino_data)
+            respaldo_dic['userDestino'] = server_des_dic['usuario']
+            respaldo_dic['status'] = "OK"
+            return JsonResponse(respaldo_dic, safe=False)
+        else:
+            return JsonResponse({'status':'ERROR'})
 #borrar configuracion de respaldos: mostrar configuraciones   
      
 @funciones.logueado
@@ -191,7 +192,7 @@ def borrar_configuracion(request):
         if configuracion:
             config_dic = model_to_dict(configuracion)
             #Inicio de Socket para eliminarlo del cron
-            funciones.mandarSignal(config_dic['ip_origen'], 34343, config_dic['periodicidad'])
+            funciones.mandarSignal(config_dic['ip_origen'], 34343, str(config_dic['id']))
 
             configuracion.delete()
 
