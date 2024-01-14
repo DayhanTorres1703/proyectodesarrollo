@@ -3,12 +3,13 @@
 {% block titulo %}Configuraciones de Respaldo{% endblock %}
 
 {% block encabezado %}Configuraciones de Respaldo{% endblock %}
-
 {% block contenido %}
   <div class="container mt-4">
     <form method="post" action="{% url 'borrar_configuracion' %}" class="mb-3">
       {% csrf_token %}
       <div class="table-responsive">
+        <h5>Selecciona la configuracion que deseas borrar:</h5>
+
         <table class="table table-bordered table-striped">
           <thead>
             <tr>
