@@ -8,19 +8,35 @@
   <div class="container mt-4">
     <form method="post" action="{% url 'borrar_configuracion' %}" class="mb-3">
       {% csrf_token %}
-      <div class="row">
-        <div class="col-md-8">
-          <label for="configuracion" class="form-label">Selecciona una configuración:</label>
-          <select name="configuracion" id="configuracion" class="form-select" style="width: 100%;">
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>Borrar</th> <!-- seleccion de borrado -->
+              <th>ID</th>
+              <th>IP Origen</th>
+              <th>Directorio Origen</th>
+              <th>Periodicidad</th>
+              <th>Fecha Respaldo</th>
+            </tr>
+          </thead>
+          <tbody>
             {% for configuracion in configuraciones_respaldo %}
-              <option value="{{ configuracion.id }}">{{ configuracion.id }} - {{ configuracion.ip_origen }} - {{ configuracion.directorio_origen }} - {{ configuracion.periodicidad }} - {{ configuracion.fecha_respaldo }}</option>
+              <tr>
+                <td>
+                  <input type="radio" name="configuracion" value="{{ configuracion.id }}">
+                </td>
+                <td>{{ configuracion.id }}</td>
+                <td>{{ configuracion.ip_origen }}</td>
+                <td>{{ configuracion.directorio_origen }}</td>
+                <td>{{ configuracion.periodicidad }}</td>
+                <td>{{ configuracion.fecha_respaldo }}</td>
+              </tr>
             {% endfor %}
-          </select>
-        </div>
-        <div class="col-md-4">
-          <button type="submit" class="btn btn-primary">Borrar Configuración</button>
-        </div>
+          </tbody>
+        </table>
       </div>
+      <button type="submit" class="btn btn-primary">Borrar Configuración</button>
     </form>
   </div>
 {% endblock %}
