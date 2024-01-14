@@ -192,7 +192,7 @@ def borrar_configuracion(request):
         if configuracion:
             config_dic = model_to_dict(configuracion)
             #Inicio de Socket para eliminarlo del cron
-            funciones.mandarSignal(config_dic['ip_origen'], 34343, config_dic['periodicidad'])
+            funciones.mandarSignal(config_dic['ip_origen'], 34343, str(config_dic['id']))
 
             configuracion.delete()
 
