@@ -139,6 +139,8 @@ def obtenerReporte(request) -> JsonResponse:
             nuevo_reporte.save()
             return JsonResponse({'status': 'Se completó el respaldo'})
         else:
+            nuevo_reporte = models.Reportes(estado=estado_respaldo,nombre=nombre_respaldo,respaldo_origen=respaldo)
+            nuevo_reporte.save()
             return JsonResponse({'status':'ERROR'})
 
 @funciones.logueado
