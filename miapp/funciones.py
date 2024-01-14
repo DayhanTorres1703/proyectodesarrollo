@@ -19,7 +19,7 @@ def validar_ip(ip):
     else:
         return False
 
-def mandarSignal(ip, puerto):
+def mandarSignal(ip, puerto, signal):
     #Crear socket UDP
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
@@ -27,7 +27,7 @@ def mandarSignal(ip, puerto):
     direccion_destino = (ip, puerto)
 
     #Enviar la señal
-    mensaje = "Trabaja"
+    mensaje = signal
     sock.sendto(mensaje.encode(), direccion_destino)
 
     #Cerrar el socket

@@ -31,6 +31,7 @@ urlpatterns = [
     path('leer_Respaldo/', views.leerReportes, name='leer_respaldo'),
     path('mostrar_configuraciones/', views.mostrar_configuraciones_respaldo, name='mostrar_configuraciones_respaldo'),
     path('borrar_configuracion/', views.borrar_configuracion, name='borrar_configuracion'),
+    path('respaldar_servidor/', views.respaldarServidor),
 
 
 
