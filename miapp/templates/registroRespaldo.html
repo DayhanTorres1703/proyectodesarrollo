@@ -5,6 +5,8 @@
 {% block encabezado %}Registro de Respaldo{% endblock %}
 
 {% block contenido %}
+<div class="row">
+  <div class="col-md-8">
   <form method="post" action="{% url 'registroRespaldo' %}">
     {% csrf_token %}
 
@@ -46,6 +48,7 @@
 
     <div class="mb-3">
       <label for="periodicidad" class="form-label">Periodicidad del Respaldo</label>
+      <h5 style="color: red;">Nota: El Asterisco "*" significa todos los valores posibles en el campo</h5>
       <div class="row">
         <div class="mb-3">
           <label for="minutos" class="form-label">Minutos</label>
@@ -93,6 +96,30 @@
         </div>
       </div>
     </div>
+  </div>
+  
+  <div class="col-md-4">
+    <h2>Servidores</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nombre del Servidor</th>
+          <th>IP del Servidor</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for servidor in servidores %}
+          <tr>
+            <td>{{ servidor.nombre }}</td>
+            <td>{{ servidor.ip }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+
+  </div>
 
     <button type="submit" class="btn btn-primary" id="enviarRespaldo">Registrar Respaldo</button>
   </form>

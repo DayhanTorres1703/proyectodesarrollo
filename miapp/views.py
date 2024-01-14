@@ -83,8 +83,8 @@ def registroRespaldo(request):
     servidores = models.Servidor.objects.all()
     minutos = ['*'] + list(range(60))
     horas = ['*'] + list(range(24))
-    dias_mes = ['*'] + list(range(32))
-    meses = ['*'] + list(range(13))
+    dias_mes = ['*'] + list(range(1, 32))
+    meses = ['*'] + list(range(1, 13))
     dias_semana = ['*'] + list(range(8))
     
     
