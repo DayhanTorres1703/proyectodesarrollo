@@ -1,10 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
-from django.contrib.auth.decorators import login_required
-import os
 import json
-import hashlib
-import datetime
 from django.contrib import messages
 from django.core.serializers import serialize
 from miapp import funciones
@@ -13,21 +9,17 @@ from .models import Login
 from .models import Servidor
 from .funciones import validar_ip
 from .models import RegistroRespaldo
-from .funciones import logueado
 from django.forms.models import model_to_dict
 from django.views.decorators.csrf import csrf_exempt
-from django.core.exceptions import ObjectDoesNotExist
 
 #importar los modelos 
 from . import models 
 # Create your views here.
+
 #incio
 def hello(request):
     return HttpResponse("HOLA PROYECTO WEB")
-#mostrar un templates
-#INDEX
-def index(request):
-    return render(request, 'index.html')
+
 #formulario pruba
 def pruebaFormulario(request):
      if request.method == 'POST':
@@ -112,36 +104,37 @@ def registroServidor(request):
         servidor.save()
 
         # Redirigir a la página deseada después de guardar
-        return redirect('/reporteRespaldo/')
+        return redirect('/respaldo/')
 
     return render(request, 'registroServidor.html', {'messages': messages.get_messages(request)})
 
     
-# Código que escribe Benjamin para lo de AJAX
+# Código AJAX
 @csrf_exempt
 def obtenerReporte(request) -> JsonResponse:
     if request.method == 'POST':
         #Variables que manda el bot del server
-        #hora = request.POST.get('hora', '')
         estado_respaldo = request.POST.get('estado', '')
         nombre_respaldo = request.POST.get('nombre','')
         contra = request.POST.get('pass','')
         identificador = request.POST.get('id','')
-        #print("HOLAAAAA" + identificador + " " + contra + " " + nombre_respaldo)
-
+        #Obtener la configuración del respaldo tomando como referencia la ID obtenida del bot
         respaldo = models.RegistroRespaldo.objects.get(id=identificador)
         respaldo_dic = model_to_dict(respaldo)
+        #Con la configuración del respaldo se obtiene el servidor donde se hace el respaldo
         servidor_origen_data = models.Servidor.objects.get(id=respaldo_dic['servidor_origen'])
         servidor_origen_dic = model_to_dict(servidor_origen_data)
-        #print(contra == servidor_origen_dic['contrasena_bot'])
+        #Si la contraseña que pase el bot coinciden realiza el respaldo.
         if estado_respaldo == 'Exitoso' and contra == servidor_origen_dic['contrasena_bot']:
             nuevo_reporte = models.Reportes(estado=estado_respaldo,nombre=nombre_respaldo,respaldo_origen=respaldo)
             nuevo_reporte.save()
             return JsonResponse({'status': 'Se completó el respaldo'})
-        else:
+        elif contra == servidor_origen_dic['contrasena_bot']:
             nuevo_reporte = models.Reportes(estado=estado_respaldo,nombre=nombre_respaldo,respaldo_origen=respaldo)
             nuevo_reporte.save()
-            return JsonResponse({'status':'ERROR'})
+            return JsonResponse({'status':'No se hizo el respaldo'})
+        else:
+            return JsonResponse({'status':"Password doesn't match"})
 
 @funciones.logueado
 def mostrarReportes(request) -> HttpResponse:
@@ -164,11 +157,13 @@ def respaldarServidor(request) -> JsonResponse:
         return JsonResponse({'status': 'ERROR'}, safe=False)
 
     if request.method == 'POST':
+        #Obtiene la contraseña del bot
         contra = request.POST.get('contra', '')
         respaldo_reciente = models.RegistroRespaldo.objects.filter().order_by('-id')[0]
         respaldo_dic = model_to_dict(respaldo_reciente)
         servidor_origen_data = models.Servidor.objects.get(id=respaldo_dic['servidor_origen'])
         servidor_origen_dic = model_to_dict(servidor_origen_data)
+        #Compara la contraseña que se recibe del bot con la que está almacenada en la BD
         if contra == servidor_origen_dic['contrasena_bot']:
             server_destino_data = models.Servidor.objects.get(ip=respaldo_dic['ip_destino'])
             server_des_dic = model_to_dict(server_destino_data)
@@ -177,12 +172,13 @@ def respaldarServidor(request) -> JsonResponse:
             return JsonResponse(respaldo_dic, safe=False)
         else:
             return JsonResponse({'status':'ERROR'})
-#borrar configuracion de respaldos: mostrar configuraciones   
-     
+
+#borrar configuracion de respaldos: mostrar configuraciones        
 @funciones.logueado
 def mostrar_configuraciones_respaldo(request):
     configuraciones_respaldo = models.RegistroRespaldo.objects.all()
     return render(request, 'mostrar_configuraciones_respaldo.html', {'configuraciones_respaldo': configuraciones_respaldo})
+
 @funciones.logueado
 def borrar_configuracion(request):
     if request.method == 'POST':
@@ -191,7 +187,7 @@ def borrar_configuracion(request):
 
         if configuracion:
             config_dic = model_to_dict(configuracion)
-            #Inicio de Socket para eliminarlo del cron
+            #Inicio de Socket para eliminar el cron en el servidor
             funciones.mandarSignal(config_dic['ip_origen'], 34343, str(config_dic['id']))
 
             configuracion.delete()

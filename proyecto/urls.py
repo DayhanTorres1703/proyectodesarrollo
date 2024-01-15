@@ -23,7 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.hello),
     path('prueba/', views.pruebaFormulario, name='pruebaFormulario'),
-    path('index/', views.index),
     path('login/', views.login, name='login'),
     path('respaldo/', views.registroRespaldo, name='registroRespaldo'),
     path('registroservidor/', views.registroServidor, name='registroServidor'),
@@ -33,7 +32,4 @@ urlpatterns = [
     path('borrar_configuracion/', views.borrar_configuracion, name='borrar_configuracion'),
     path('respaldar_servidor/', views.respaldarServidor),
     path('subir_reporte/', views.obtenerReporte),
-
-
-
 ]
