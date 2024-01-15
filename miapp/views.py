@@ -17,6 +17,7 @@ from . import models
 # Create your views here.
 
 #incio
+@funciones.logueado
 def hello(request):
     return HttpResponse("HOLA PROYECTO WEB")
 
